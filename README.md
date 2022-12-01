@@ -1,3 +1,7 @@
+# Ty Garside - tyroid42@gmail.com
+
+SPOILERS!!! Don't look at the code if you haven't completed the challenge yet.
+
 # aoc-2022-in-kotlin
 
 Welcome to the Advent of Code[^aoc] Kotlin project created by [ty-garside][github] using the [Advent of Code Kotlin Template][template] delivered by JetBrains.
