@@ -1,31 +1,31 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input
-            .fold(mutableListOf(0)) { acc, it ->
-                acc.apply {
-                    if (it.isBlank()) {
-                        add(0)
-                    } else {
-                        this[lastIndex] += it.toInt()
-                    }
+
+    // NOTE: assumes always at least one elf and ignores possible
+    // parsing errors and extra blank lines
+    fun List<String>.sumOfCaloriesForEachElf() =
+        fold(mutableListOf(0 /* first elf */)) { elves, calories ->
+            elves.apply {
+                if (calories.isBlank()) {
+                    // new elf, add a new zero element
+                    this += 0
+                } else {
+                    // add to current elf
+                    this[lastIndex] += calories.toInt()
                 }
             }
+        }
+
+    fun part1(input: List<String>): Int {
+        return input
+            .sumOfCaloriesForEachElf()
             .max()
     }
 
     fun part2(input: List<String>): Int {
         return input
-            .fold(mutableListOf(0)) { acc, it ->
-                acc.apply {
-                    if (it.isBlank()) {
-                        add(0)
-                    } else {
-                        this[lastIndex] += it.toInt()
-                    }
-                }
-            }
-            .sorted()
-            .takeLast(3)
+            .sumOfCaloriesForEachElf()
+            .sortedDescending()
+            .take(3)
             .sum()
     }
 
