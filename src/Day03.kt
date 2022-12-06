@@ -18,9 +18,7 @@ fun main() {
     fun part1(input: List<String>): Int {
         return input.asSequence()
             .map { compartments(it) }
-//            .onEach { println(it) }
             .map { it.first.toSet().intersect(it.second.toSet()) }
-//            .onEach { println(it) }
             .flatMap {
                 it.map { char -> priority(char) }
             }
@@ -34,7 +32,6 @@ fun main() {
                     .intersect(it[1].toSet())
                     .intersect(it[2].toSet())
             }
-//            .onEach { println(it) }
             .flatMap {
                 it.map { char -> priority(char) }
             }
