@@ -15,49 +15,44 @@ fun main() {
                     }
                 }
         }
-        println(this)
     }.toList()
 
     val regex = Regex("move (\\d+) from (\\d+) to (\\d+)")
 
     fun Iterator<String>.executeMoves(stacks: List<ArrayDeque<Char>>, multi: Boolean) {
         while (hasNext()) {
-            val line = next()
-            val (move, from, to) = regex.matchEntire(line)!!.destructured
-            val fromIndex = from.toInt() - 1
-            val toIndex = to.toInt() - 1
-            if(multi) {
-                repeat(move.toInt()) {
-                    stacks[toIndex].add(it,stacks[fromIndex].removeFirst())
-                }
-            } else {
-                repeat(move.toInt()) {
-                    stacks[toIndex].addFirst(stacks[fromIndex].removeFirst())
-                }
+            val (move, from, to) = regex.matchEntire(next())!!.destructured
+            repeat(move.toInt()) {
+                stacks[to.toInt() - 1].add(
+                    if (multi) it else 0,
+                    stacks[from.toInt() - 1].removeFirst()
+                )
             }
-            println("$line $stacks")
+//            println("$line $stacks")
         }
     }
+
+    fun List<ArrayDeque<Char>>.topLayer() = map { it.first() }.joinToString("")
 
     fun part1(input: List<String>): String {
         with(input.iterator()) {
             val stacks = initStacks()
-            executeMoves(stacks,false)
-            return stacks.map { it.first() }.joinToString("")
+            executeMoves(stacks, false)
+            return stacks.topLayer()
         }
     }
 
     fun part2(input: List<String>): String {
         with(input.iterator()) {
             val stacks = initStacks()
-            executeMoves(stacks,true)
-            return stacks.map { it.first() }.joinToString("")
+            executeMoves(stacks, true)
+            return stacks.topLayer()
         }
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
-    check(part1(testInput).also { println(it) } == "CMZ")
+    check(part1(testInput) == "CMZ")
 
     val input = readInput("Day05")
     println(part1(input))
