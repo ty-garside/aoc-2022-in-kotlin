@@ -3,47 +3,43 @@
 
 fun main() {
 
-    fun range(str: String): Pair<Int, Int> {
-        val (from, to) = str.split('-')
-        return from.toInt() to to.toInt()
+    infix fun IntRange.fullyContains(that: IntRange) =
+        (this.first <= that.first) && (this.last >= that.last)
+
+    infix fun IntRange.overlapsWith(that: IntRange) =
+        (this.first >= that.first && this.first <= that.last) ||
+                (this.last >= that.first && this.last <= that.last)
+
+    fun range(it: String): IntRange {
+        val (from, to) = it.split('-')
+        return from.toInt()..to.toInt()
     }
 
-    fun Pair<Int, Int>.eatsup(that: Pair<Int, Int>) =
-        (this.first <= that.first) && (this.second >= that.second)
-
-    fun Pair<Int, Int>.overlap(that: Pair<Int, Int>) =
-        (this.first >= that.first && this.first <= that.second) ||
-                (this.second >= that.first && this.second <= that.second)
+    fun parse(it: String): Pair<IntRange, IntRange> {
+        val (first, second) = it.split(',')
+        return range(first) to range(second)
+//            .also { println(it) }
+    }
 
     fun part1(input: List<String>): Int {
         return input
-            .map {
-                val (first, second) = it.split(',')
-                range((first)) to range((second))
-            }.onEach {
-                println(it)
-            }
+            .map { parse(it) }
             .count {
-                it.first.eatsup(it.second) || it.second.eatsup(it.first)
+                it.first fullyContains it.second || it.second fullyContains it.first
             }
     }
 
     fun part2(input: List<String>): Int {
         return input
-            .map {
-                val (first, second) = it.split(',')
-                range((first)) to range((second))
-            }.onEach {
-                println(it)
-            }
+            .map { parse(it) }
             .count {
-                it.first.overlap(it.second) || it.second.overlap(it.first)
+                it.first overlapsWith it.second || it.second overlapsWith it.first
             }
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day04_test")
-    check(part1(testInput).also { println(it) } == 2)
+    check(part1(testInput) == 2)
 
     val input = readInput("Day04")
     println(part1(input))
