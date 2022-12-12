@@ -1,6 +1,8 @@
 // Day 08 - Treetop Tree House
 // https://adventofcode.com/2022/day/8
 
+import Direction.*
+
 fun main() {
 
     data class Tree(
@@ -32,19 +34,19 @@ fun main() {
         fun look(tree: Tree, direction: Direction) = sequence {
             with(tree) {
                 when (direction) {
-                    Direction.Up -> for (r in row - 1 downTo 0) {
+                    Up -> for (r in row - 1 downTo 0) {
                         yield(trees[r][column])
                     }
 
-                    Direction.Down -> for (r in row + 1 until rows) {
+                    Down -> for (r in row + 1 until rows) {
                         yield(trees[r][column])
                     }
 
-                    Direction.Left -> for (c in column - 1 downTo 0) {
+                    Left -> for (c in column - 1 downTo 0) {
                         yield(trees[row][c])
                     }
 
-                    Direction.Right -> for (c in column + 1 until cols) {
+                    Right -> for (c in column + 1 until cols) {
                         yield(trees[row][c])
                     }
                 }
