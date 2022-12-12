@@ -3,6 +3,55 @@
 
 fun main() {
 
+    data class Tree(
+        val row: Int,
+        val column: Int,
+        val height: Int
+    )
+
+    class Trees(input: List<String>) {
+        private val trees = input.mapIndexed { row, line ->
+            line.mapIndexed { col, ch ->
+                Tree(row, col, ch - '0')
+            }
+        }
+
+        val rows = trees.size
+        val cols = trees[0].size
+
+        operator fun get(row: Int, col: Int) = trees[row][col]
+
+        fun all() = sequence {
+            for (row in 0 until rows) {
+                for (col in 0 until cols) {
+                    yield(trees[row][col])
+                }
+            }
+        }
+
+        fun look(tree: Tree, direction: Direction) = sequence {
+            with(tree) {
+                when (direction) {
+                    Direction.Up -> for (r in row - 1 downTo 0) {
+                        yield(trees[r][column])
+                    }
+
+                    Direction.Down -> for (r in row + 1 until rows) {
+                        yield(trees[r][column])
+                    }
+
+                    Direction.Left -> for (c in column - 1 downTo 0) {
+                        yield(trees[row][c])
+                    }
+
+                    Direction.Right -> for (c in column + 1 until cols) {
+                        yield(trees[row][c])
+                    }
+                }
+            }
+        }
+    }
+
     val dirs = Direction.values().asSequence()
 
     fun part1(input: List<String>): Int {
@@ -39,62 +88,6 @@ fun main() {
     val input = readInput("Day08")
     println(part1(input))
     println(part2(input))
-}
-
-private enum class Direction {
-    Up,
-    Down,
-    Left,
-    Right
-}
-
-private data class Tree(
-    val row: Int,
-    val column: Int,
-    val height: Int
-)
-
-private class Trees(val input: List<String>) {
-    private val trees = input.mapIndexed { row, line ->
-        line.mapIndexed { col, ch ->
-            Tree(row, col, ch - '0')
-        }
-    }
-
-    val rows = trees.size
-    val cols = trees[0].size
-
-    operator fun get(row: Int, col: Int) = trees[row][col]
-
-    fun all() = sequence {
-        for (row in 0 until rows) {
-            for (col in 0 until cols) {
-                yield(trees[row][col])
-            }
-        }
-    }
-
-    fun look(tree: Tree, direction: Direction) = sequence {
-        with(tree) {
-            when (direction) {
-                Direction.Up -> for (r in row - 1 downTo 0) {
-                    yield(trees[r][column])
-                }
-
-                Direction.Down -> for (r in row + 1 until rows) {
-                    yield(trees[r][column])
-                }
-
-                Direction.Left -> for (c in column - 1 downTo 0) {
-                    yield(trees[row][c])
-                }
-
-                Direction.Right -> for (c in column + 1 until cols) {
-                    yield(trees[row][c])
-                }
-            }
-        }
-    }
 }
 
 /*
