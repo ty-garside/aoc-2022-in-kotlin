@@ -50,9 +50,9 @@ fun main() {
                 val cycle = index + 1
                 val column = index % 40
                 if (abs(column - register) <= 1) {
-                    str.append('#')
+                    str.append('\u2588')
                 } else {
-                    str.append('.')
+                    str.append('\u2591')
                 }
                 if (cycle % 40 == 0) {
                     str.append('\n')
